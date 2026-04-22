@@ -1,0 +1,2104 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <title>مصرف الراجحي - واجهة مدمجة</title>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+
+  <style>
+    :root{
+      --bg:#000;
+      --text:#fff;
+      --blue:#4d7dff;
+      --rajhi-blue:#0A1C5A;
+      --rajhi-bright:#0055FF;
+    }
+
+    *{
+      box-sizing:border-box;
+      margin:0;
+      padding:0;
+      font-family:Tahoma, Arial, sans-serif;
+      -webkit-tap-highlight-color:transparent;
+    }
+
+    html, body{
+      width:100%;
+      height:100%;
+      min-height:100%;
+      background:#000;
+      overflow:hidden;
+    }
+
+    body{
+      color:var(--text);
+    }
+
+    .app-shell{
+      width:100vw;
+      height:100vh;
+      min-height:100vh;
+      max-width:none;
+      position:relative;
+      background:#000;
+      overflow:hidden;
+    }
+
+    .page{
+      display:none;
+      position:absolute;
+      inset:0;
+      width:100%;
+      height:100%;
+      overflow-y:auto;
+      overflow-x:hidden;
+      padding:20px 16px 110px;
+      -webkit-overflow-scrolling:touch;
+      background:#000;
+    }
+
+    .page.active{ display:block; }
+
+    /* ===== الرئيسية ===== */
+    #home{
+      background:#000;
+      color:#fff;
+    }
+
+    .topbar{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:20px;
+      gap:10px;
+      direction:ltr;
+    }
+
+    .top-user,.top-icons{
+      display:flex;
+      align-items:center;
+      gap:14px;
+      min-width:95px;
+    }
+
+    .top-center-logo{
+      flex:1;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      cursor:pointer;
+    }
+
+    .rajhi-logo{ width:40px; height:40px; display:block; }
+    .icon{ font-size:22px; color:#fff; }
+
+    .points{
+      font-size:14px;
+      line-height:1.4;
+      text-align:left;
+    }
+
+    .points strong{
+      display:block;
+      font-size:18px;
+      margin-top:2px;
+    }
+
+    .avatar{
+      width:40px;
+      height:40px;
+      background:#222;
+      border-radius:50%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:20px;
+    }
+
+    .alert-box{
+      background:#1c1c1c;
+      border-radius:20px;
+      padding:16px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      margin-bottom:20px;
+      gap:10px;
+    }
+
+    .alert-box .text{
+      flex:1;
+      font-size:16px;
+      text-align:right;
+    }
+
+    .alert-box .warn{
+      color:#d07a3b;
+      font-size:24px;
+      font-weight:bold;
+    }
+
+    .stories{
+      display:flex;
+      gap:10px;
+      overflow-x:auto;
+      padding-bottom:5px;
+      margin-bottom:28px;
+      -ms-overflow-style:none;
+      scrollbar-width:none;
+    }
+
+    .stories::-webkit-scrollbar{ display:none; }
+
+    .story{
+      min-width:74px;
+      text-align:center;
+      font-size:12px;
+      color:#fff;
+      cursor:pointer;
+      flex-shrink:0;
+    }
+
+    .circle{
+      width:70px;
+      height:70px;
+      border-radius:50%;
+      border:3px solid #3b6fff;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      background:#eee8dc;
+      margin:0 auto 6px;
+    }
+
+    .circle i{
+      color:#111;
+      font-size:26px;
+    }
+
+    .balance{
+      text-align:center;
+      margin-bottom:28px;
+    }
+
+    .balance-title{
+      font-size:20px;
+      margin-bottom:12px;
+    }
+
+    .balance .amount{
+      font-size:42px;
+      margin:10px 0 18px;
+    }
+
+    .balance-amount-wrap{
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .balance-toggle{
+      font-size:20px;
+      cursor:pointer;
+      color:var(--blue);
+    }
+
+    .btn{
+      background:#dce8ff;
+      color:#4b6ca8;
+      padding:14px 22px;
+      border-radius:16px;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      font-size:17px;
+      font-weight:600;
+    }
+
+    .section-head{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:14px;
+    }
+
+    .section-head h2{ font-size:22px; }
+
+    .section-head a{
+      color:#4d7dff;
+      text-decoration:none;
+      font-size:15px;
+    }
+
+    .home-card{
+      background:#181818;
+      border-radius:20px;
+      padding:18px;
+    }
+
+    .card-top{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:12px;
+      direction:ltr;
+    }
+
+    .amount-box strong{
+      display:block;
+      font-size:22px;
+      margin-bottom:6px;
+      word-break:break-word;
+    }
+
+    .amount-box div{
+      color:#d0d0d0;
+      font-size:15px;
+    }
+
+    .mada-wrap{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      direction:ltr;
+    }
+
+    .mada-bars{
+      display:flex;
+      flex-direction:column;
+      gap:4px;
+    }
+
+    .mada-bars span{
+      display:block;
+      width:40px;
+      height:8px;
+      border-radius:2px;
+    }
+
+    .mada-bars span:first-child{ background:#2f9df5; }
+    .mada-bars span:last-child{ background:#93d84f; }
+
+    .mada-text{
+      font-size:18px;
+      font-weight:bold;
+    }
+
+    .divider{
+      height:1px;
+      background:#333;
+      margin:15px 0;
+    }
+
+    .operations{
+      text-align:center;
+      color:#4d7dff;
+      font-size:16px;
+    }
+
+    /* ===== المدفوعات ===== */
+    #payments{
+      background:#000;
+      color:#fff;
+    }
+
+    .page-title{
+      font-weight:900;
+      color:#fff;
+      font-size:24px;
+      margin:4px 0 18px;
+    }
+
+    .pay-grid{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:12px;
+      padding-top:10px;
+    }
+
+    .pay-card{
+      background:#181818;
+      border-radius:22px;
+      padding:20px 10px;
+      text-align:center;
+      border:1px solid #252525;
+    }
+
+    /* ===== شريط سفلي ===== */
+    .bottom-nav{
+      position:fixed;
+      bottom:0;
+      left:0;
+      right:0;
+      width:100%;
+      background:#000;
+      border-top:1px solid rgba(255,255,255,.08);
+      display:flex;
+      justify-content:space-around;
+      align-items:center;
+      padding:10px 4px calc(10px + env(safe-area-inset-bottom));
+      z-index:999;
+    }
+
+    .nav-item{
+      flex:1;
+      min-width:0;
+      text-align:center;
+      color:#d5d5d5;
+      font-size:10px;
+      line-height:1.2;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      cursor:pointer;
+    }
+
+    .nav-item i{
+      display:block;
+      font-size:20px;
+      margin-bottom:4px;
+    }
+
+    .nav-item.active{
+      color:#4d7dff;
+      font-weight:bold;
+    }
+
+    /* ===== إشعارات ولوحات ===== */
+    .toast-notification{
+      position:fixed;
+      top:-150px;
+      left:50%;
+      transform:translateX(-50%);
+      width:calc(100% - 24px);
+      max-width:500px;
+      background:rgba(28,28,28,.96);
+      border-radius:18px;
+      padding:15px 20px;
+      box-shadow:0 15px 35px rgba(0,0,0,.35);
+      z-index:9999;
+      display:flex;
+      flex-direction:column;
+      transition:top .5s cubic-bezier(.175,.885,.32,1.275);
+      border:1px solid rgba(255,255,255,.08);
+    }
+
+    .toast-header{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:8px;
+    }
+
+    .toast-body{
+      font-size:15px;
+      font-weight:900;
+      color:#fff;
+      text-align:right;
+      line-height:1.4;
+    }
+
+    .overlay-screen{
+      position:fixed;
+      top:0;
+      left:0;
+      width:100%;
+      height:100%;
+      z-index:6000;
+      display:none;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      color:white;
+      padding:20px;
+    }
+
+    #loading-screen{ background:rgba(0,0,0,.95); }
+    #success-screen{ background:linear-gradient(180deg,#0A1C5A 0%,#1A3BB0 100%); }
+    #fail-screen{ background:linear-gradient(180deg,#7F1D1D 0%,#DC2626 100%); }
+
+    .spinner{
+      width:60px;
+      height:60px;
+      border:6px solid #2b2b2b;
+      border-top:6px solid var(--blue);
+      border-radius:50%;
+      animation:spin 1s linear infinite;
+    }
+
+    @keyframes spin{
+      0%{transform:rotate(0deg)}
+      100%{transform:rotate(360deg)}
+    }
+
+    #admin-panel{
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,.82);
+      z-index:9000;
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding:20px;
+    }
+
+    .admin-box{
+      background:#111;
+      width:100%;
+      max-width:420px;
+      border-radius:25px;
+      padding:25px;
+      direction:rtl;
+      color:#fff;
+      border:1px solid #2a2a2a;
+    }
+
+    .admin-row{ margin-top:12px; }
+
+    .admin-row label{
+      display:block;
+      font-size:13px;
+      margin-bottom:8px;
+      color:#d8d8d8;
+    }
+
+    .admin-row input, .admin-row select{
+      width:100%;
+      border:none;
+      outline:none;
+      background:#1b1b1b;
+      color:#fff;
+      padding:14px;
+      border-radius:12px;
+    }
+
+    /* ===== الإيصال ===== */
+    #receipt-page{
+      background:#111;
+      padding:10px 12px 120px;
+    }
+
+    .receipt-container {
+      width: 100%;
+      background: #ffffff;
+      box-shadow: 0 4px 25px rgba(0,0,0,0.1);
+      position: relative;
+      margin: 10px auto 30px;
+      direction: ltr;
+      text-align: left;
+      padding-bottom: 110px;
+      border-radius: 4px;
+      overflow: visible;
+      color:#111;
+    }
+
+    .top-line { height: 12px; background-color: #1a2a52; width:100%; display:block; }
+    .header-image { width:100%; display:block; }
+    .header-image img { width:100%; height:auto; display:block; object-fit:contain; }
+    .footer-image { width:100%; padding: 6px 36px 28px 36px; }
+    .footer-image img { width:100%; height:auto; display:block; object-fit:contain; }
+
+    .sub-header {
+      padding: 15px 36px;
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+      gap:12px;
+      position:relative;
+      min-height:60px;
+    }
+
+    .beneficiary-text {
+      color:#5e6670;
+      font-weight:600;
+      font-size:14px;
+      text-align:left;
+      direction:rtl;
+    }
+
+    .date-block { text-align:right; min-width:220px; }
+    .date-label { font-size:13px; color:#0a1c3a; font-weight:700; margin-bottom:6px; }
+    .date-value { font-size:14px; color:#0a1c3a; font-weight:700; direction:ltr; white-space: nowrap; }
+
+    .details-bar {
+      background-color: #eff2f6;
+      margin: 0 36px;
+      padding: 12px 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: #223247;
+      font-size: 15px;
+      font-weight: 600;
+      border-radius: 4px;
+    }
+
+    .data-content { padding: 18px 36px 24px 36px; }
+
+    .data-row {
+      display: grid;
+      grid-template-columns: 120px 1fr 120px;
+      align-items: center;
+      gap: 12px;
+      padding: 16px 0;
+      border-bottom: 1px solid #e9edf0;
+    }
+
+    .data-row:last-child { border-bottom: none; padding-bottom: 6px; }
+
+    .label-en { font-weight:700; color:#0a1c3a; font-size:15px; text-align:left; }
+    .center-data { text-align:center; color:#263244; font-size:15.5px; line-height:1.6; }
+    .label-ar { font-weight:700; color:#0a1c3a; font-size:15px; text-align:right; direction:rtl; }
+    .bold-text { font-weight:800; font-size:16px; }
+    .muted { color:#6b7280; font-size:14px; }
+
+    .receipt-actions {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      padding: 18px 20px;
+      background: white;
+      display: flex;
+      gap: 10px;
+      box-shadow: 0 -6px 24px rgba(0,0,0,0.06);
+      z-index: 1000;
+      justify-content: center;
+    }
+
+    .receipt-actions .primary {
+      flex:2;
+      background:var(--rajhi-blue);
+      color:white;
+      border:none;
+      padding:16px;
+      border-radius:40px;
+      font-weight:900;
+      font-size:15px;
+      cursor:pointer;
+    }
+
+    .receipt-actions .secondary {
+      flex:1;
+      background:#F3F4F6;
+      color:#555;
+      border:none;
+      padding:16px;
+      border-radius:40px;
+      font-weight:900;
+      font-size:15px;
+      cursor:pointer;
+    }
+
+    /* ===== صفحة التحويل ===== */
+    #transfer{
+      background:#e8ecef;
+      color:#111;
+      padding:0 !important;
+    }
+
+    .transfer-flow-shell{
+      width:100%;
+      min-height:100vh;
+      background:#e8ecef;
+    }
+
+    #transferApp{
+      width:100%;
+      min-height:100vh;
+    }
+
+    .transfer-phone{
+      width:100%;
+      min-height:100vh;
+      background:#fff;
+      border:none;
+      border-radius:0;
+      overflow:hidden;
+      box-shadow:none;
+      position:relative;
+    }
+
+    .transfer-phone.dark{
+      background:#071022;
+      color:#fff;
+    }
+
+    .transfer-notch-wrap{
+      height:22px;
+      display:flex;
+      justify-content:center;
+      align-items:flex-start;
+      background:inherit;
+    }
+
+    .transfer-notch{
+      width:130px;
+      height:14px;
+      background:#000;
+      border-radius:0 0 20px 20px;
+    }
+
+    .transfer-screen{
+      min-height:calc(100vh - 22px);
+      position:relative;
+      overflow-y:auto;
+      overflow-x:hidden;
+      padding-bottom:120px;
+      -webkit-overflow-scrolling:touch;
+    }
+
+    .transfer-header,
+    .transfer-topbar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:16px 20px 12px;
+    }
+
+    .transfer-title{
+      font-size:24px;
+      font-weight:700;
+    }
+
+    .transfer-header-btn,
+    .transfer-tab,
+    .transfer-story,
+    .transfer-option,
+    .transfer-select-box,
+    .transfer-primary,
+    .transfer-secondary,
+    .transfer-service,
+    .transfer-method,
+    .transfer-list-item,
+    .transfer-pill,
+    .transfer-quick-btn{
+      cursor:pointer;
+    }
+
+    .transfer-header-btn{
+      background:none;
+      border:none;
+      color:#167a73;
+      font-size:16px;
+      padding:0;
+    }
+
+    .transfer-arrow{
+      font-size:28px;
+      line-height:1;
+    }
+
+    .transfer-row{ display:flex; align-items:center; }
+    .transfer-space-between{ justify-content:space-between; }
+    .transfer-gap-12{ gap:12px; }
+    .transfer-gap-16{ gap:16px; }
+    .transfer-muted{ color:#666; }
+
+    .transfer-soft-card{
+      background:#eff1f6;
+      border-radius:18px;
+    }
+
+    .transfer-dark-top{
+      padding:16px 20px 0;
+    }
+
+    .transfer-profile{
+      width:56px;
+      height:56px;
+      border-radius:50%;
+      background:linear-gradient(135deg,#fff,#bfd4ff);
+      color:#1e2c52;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:700;
+      border:2px solid rgba(255,255,255,.4);
+    }
+
+    .transfer-dark-links{
+      display:flex;
+      justify-content:space-between;
+      margin-top:28px;
+      font-size:18px;
+      gap:10px;
+      overflow-x:auto;
+      scrollbar-width:none;
+      white-space:nowrap;
+    }
+
+    .transfer-dark-links::-webkit-scrollbar{ display:none; }
+
+    .transfer-dark-links button{
+      background:none;
+      border:none;
+      color:rgba(255,255,255,.9);
+      font-size:18px;
+      flex-shrink:0;
+    }
+
+    .transfer-dark-card{
+      background:#242d45;
+      border-radius:24px;
+      color:#fff;
+      padding:18px;
+      border:none;
+      width:100%;
+      text-align:right;
+    }
+
+    .transfer-services-grid{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:14px;
+      margin-top:14px;
+    }
+
+    .transfer-service{
+      border:none;
+      background:#242d45;
+      color:#fff;
+      border-radius:22px;
+      aspect-ratio:.88;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      gap:14px;
+      padding:8px;
+      text-align:center;
+      font-size:15px;
+    }
+
+    .transfer-service-circle{
+      width:56px;
+      height:56px;
+      border-radius:50%;
+      background:#6570ff;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:24px;
+    }
+
+    .transfer-content{
+      padding:0 20px;
+      position:relative;
+      z-index:2;
+    }
+
+    .transfer-segment-wrap{
+      display:flex;
+      gap:12px;
+      padding:0 20px;
+      margin-top:12px;
+    }
+
+    .transfer-segment{
+      flex:1;
+      border:1px solid transparent;
+      background:#f1f2f7;
+      color:#666;
+      border-radius:999px;
+      padding:12px 16px;
+      font-size:18px;
+    }
+
+    .transfer-segment.active{
+      border-color:#0d857d;
+      color:#0d857d;
+      background:#fff;
+    }
+
+    .transfer-select-box,
+    .transfer-option{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding:16px;
+      margin-top:14px;
+    }
+
+    .transfer-select-box,
+    .transfer-option,
+    .transfer-list-item,
+    .transfer-method{
+      width:100%;
+      border:none;
+      text-align:right;
+      color:inherit;
+      background:#eff1f6;
+      border-radius:18px;
+    }
+
+    .transfer-list-wrap{
+      margin-top:18px;
+    }
+
+    .transfer-search-box{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      background:#eff1f6;
+      border-radius:18px;
+      padding:16px;
+      font-size:18px;
+    }
+
+    .transfer-list-item{
+      background:transparent;
+      border-bottom:1px solid rgba(0,0,0,.08);
+      border-radius:0;
+      padding:18px 0;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      font-size:18px;
+    }
+
+    .transfer-methods{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:14px;
+      margin-top:12px;
+    }
+
+    .transfer-method{
+      min-height:160px;
+      padding:16px;
+      border:2px solid transparent;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      gap:12px;
+      font-size:18px;
+      line-height:1.7;
+    }
+
+    .transfer-method.active{
+      border-color:#0d857d;
+    }
+
+    .transfer-input-box{
+      margin-top:14px;
+      background:#eff1f6;
+      border-radius:18px;
+      padding:16px;
+    }
+
+    .transfer-input-box input,
+    .transfer-field input{
+      width:100%;
+      border:none;
+      outline:none;
+      background:transparent;
+      font-size:22px;
+      font-family:inherit;
+    }
+
+    .transfer-field{
+      margin-top:14px;
+      background:#eff1f6;
+      border-radius:18px;
+      padding:16px;
+      position:relative;
+    }
+
+    .transfer-field input{
+      font-size:18px;
+    }
+
+    .transfer-bottom-action{
+      position:sticky;
+      left:20px;
+      right:20px;
+      bottom:0;
+      z-index:4;
+      padding:20px;
+      background:linear-gradient(to top, rgba(255,255,255,1), rgba(255,255,255,.88), rgba(255,255,255,0));
+    }
+
+    .transfer-primary,
+    .transfer-secondary{
+      width:100%;
+      border:none;
+      border-radius:18px;
+      padding:16px;
+      font-size:22px;
+      font-weight:700;
+    }
+
+    .transfer-primary{
+      background:#00796b;
+      color:#fff;
+    }
+
+    .transfer-primary.disabled{
+      background:#edf0f3;
+      color:#b9bdc5;
+    }
+
+    .transfer-secondary{
+      background:#dff7ec;
+      color:#00796b;
+      margin-top:14px;
+    }
+
+    .transfer-success{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      padding-top:64px;
+      position:relative;
+      z-index:2;
+      text-align:center;
+      min-height:100%;
+    }
+
+    .transfer-success-circle{
+      width:112px;
+      height:112px;
+      border-radius:50%;
+      background:radial-gradient(circle at 30% 30%, #9af1cf, #13d79d);
+      color:#fff;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:54px;
+      font-weight:700;
+    }
+
+    .transfer-amount-title{
+      text-align:center;
+      font-size:34px;
+      margin-top:24px;
+    }
+
+    .transfer-amount-row{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:12px;
+      margin-top:10px;
+    }
+
+    .transfer-amount-row input{
+      width:150px;
+      border:none;
+      outline:none;
+      background:transparent;
+      text-align:center;
+      font-size:62px;
+      font-weight:700;
+      font-family:inherit;
+    }
+
+    .transfer-center-soft{
+      display:inline-flex;
+      gap:40px;
+      align-items:center;
+      background:#eff1f6;
+      border-radius:16px;
+      padding:14px 18px;
+      margin:14px auto 0;
+    }
+
+    .transfer-pills{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+      margin-top:10px;
+    }
+
+    .transfer-pill{
+      border:none;
+      background:#eff1f6;
+      border-radius:999px;
+      padding:14px 20px;
+      font-size:18px;
+    }
+
+    .transfer-pill.active{
+      border:2px solid #0d857d;
+      background:#fff;
+    }
+
+    .transfer-notification{
+      position:absolute;
+      left:16px;
+      top:18px;
+      width:min(330px, calc(100% - 32px));
+      background:#fff;
+      color:#111;
+      border-radius:18px;
+      box-shadow:0 10px 24px rgba(0,0,0,.16);
+      border:1px solid rgba(0,0,0,.08);
+      padding:14px;
+      z-index:4;
+      text-align:right;
+    }
+
+    .transfer-mini-circle{
+      width:40px;
+      height:40px;
+      border-radius:50%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+
+    .transfer-stamps{
+      position:absolute;
+      inset-inline:0;
+      bottom:30px;
+      height:320px;
+      opacity:.28;
+      pointer-events:none;
+      z-index:1;
+    }
+
+    .transfer-stamp{
+      position:absolute;
+      width:108px;
+      height:145px;
+      border-radius:14px;
+      box-shadow:0 2px 10px rgba(0,0,0,.06);
+    }
+
+    .transfer-quick-panel{
+      margin-top:22px;
+      background:#fff;
+      color:#111;
+      border-top-left-radius:26px;
+      border-top-right-radius:26px;
+      padding:20px 18px 30px;
+      box-shadow:0 -8px 24px rgba(0,0,0,.12);
+    }
+
+    .transfer-quick-title{
+      font-size:22px;
+      font-weight:700;
+      margin-bottom:14px;
+      text-align:right;
+    }
+
+    .transfer-quick-switches{
+      display:flex;
+      gap:10px;
+      margin-bottom:16px;
+      overflow-x:auto;
+      scrollbar-width:none;
+    }
+
+    .transfer-quick-switches::-webkit-scrollbar{ display:none; }
+
+    .transfer-quick-btn{
+      border:none;
+      background:#edf2f7;
+      color:#4a5568;
+      padding:12px 18px;
+      border-radius:999px;
+      font-size:15px;
+      font-weight:700;
+      white-space:nowrap;
+      flex-shrink:0;
+    }
+
+    .transfer-quick-btn.active{
+      background:#00796b;
+      color:#fff;
+    }
+
+    .transfer-form-box{
+      background:#eff1f6;
+      border-radius:18px;
+      padding:16px;
+      margin-bottom:14px;
+    }
+
+    .transfer-form-box label{
+      display:block;
+      font-size:13px;
+      color:#666;
+      font-weight:700;
+      margin-bottom:8px;
+    }
+
+    .transfer-form-box input,
+    .transfer-form-box select{
+      width:100%;
+      border:none;
+      outline:none;
+      background:transparent;
+      font-size:18px;
+      color:#111;
+    }
+
+    @media (max-width:640px){
+      .transfer-services-grid{
+        grid-template-columns:repeat(2,1fr);
+      }
+
+      .transfer-methods{
+        grid-template-columns:1fr;
+      }
+
+      .transfer-amount-row input{
+        width:120px;
+        font-size:48px;
+      }
+
+      .transfer-amount-title{
+        font-size:28px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+
+    <audio id="notif-sound" src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3" preload="auto"></audio>
+
+    <div id="toast" class="toast-notification">
+      <div class="toast-header">
+        <span>AlRajhiBank</span>
+        <div class="icon"><i class="fa-solid fa-check"></i></div>
+      </div>
+      <div class="toast-body" id="toast-msg">تم خصم مبلغ 5,000 SAR من حسابك</div>
+    </div>
+
+    <div id="loading-screen" class="overlay-screen">
+      <div class="spinner"></div>
+      <h2 style="margin-top:25px;font-weight:900;font-size:20px;">جاري معالجة الطلب بأمان...</h2>
+    </div>
+
+    <div id="success-screen" class="overlay-screen">
+      <div style="width:88px;height:88px;border-radius:50%;background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;font-size:36px;"><i class="fa-solid fa-check"></i></div>
+      <h2 style="font-weight:900;font-size:26px;margin-top:20px;">تم التحويل بنجاح</h2>
+      <p id="success-amt" style="opacity:0.9;margin-top:10px;font-size:18px;"></p>
+      <div style="background:rgba(255,255,255,0.15);padding:18px 40px;border-radius:40px;margin-top:40px;font-weight:900;cursor:pointer;border:1px solid rgba(255,255,255,0.3);" onclick="showReceipt()">View Official Receipt</div>
+    </div>
+
+    <div id="fail-screen" class="overlay-screen">
+      <div style="width:88px;height:88px;border-radius:50%;background:#991B1B;display:flex;align-items:center;justify-content:center;font-size:36px;"><i class="fa-solid fa-xmark"></i></div>
+      <h2 style="font-weight:900;font-size:26px;margin-top:20px;">عفواً، لم يتم تنفيذ العملية</h2>
+      <p id="fail-reason" style="opacity:0.9;margin-top:15px;font-size:14px;text-align:center;padding:0 20px;">الرصيد غير كافٍ لإتمام هذه العملية.</p>
+      <div style="background:white;color:#DC2626;padding:18px 40px;border-radius:40px;margin-top:40px;font-weight:900;cursor:pointer;" onclick="closeOverlays()">العودة وتعديل البيانات</div>
+    </div>
+
+    <div id="admin-panel">
+      <div class="admin-box">
+        <h3>الواجهة الخلفية (Backend)</h3>
+        <div class="admin-row">
+          <label>اسم صاحب الحساب</label>
+          <input type="text" id="admin-name" value="سلطان القحطاني">
+        </div>
+        <div class="admin-row">
+          <label>الرصيد الإجمالي (SAR)</label>
+          <input type="text" id="admin-bal" value="99,990,000.00">
+        </div>
+        <div class="admin-row">
+          <label>حالة التحويل القادم</label>
+          <select id="admin-status">
+            <option value="success">✅ نجاح العملية وإصدار إيصال</option>
+            <option value="fail">❌ رفض العملية (إلغاء)</option>
+          </select>
+        </div>
+        <div class="admin-row" id="admin-reason-row" style="display:none;">
+          <label>سبب الرفض (يظهر للمستخدم)</label>
+          <input type="text" id="admin-reason" value="تم تجاوز الحد اليومي للتحويلات.">
+        </div>
+        <div onclick="saveAdmin()" style="margin-top:14px;padding:12px 18px;background:var(--blue);color:#fff;border-radius:12px;text-align:center;cursor:pointer;font-weight:900;">حفظ وتحديث النظام</div>
+      </div>
+    </div>
+
+    <section id="home" class="page active">
+      <div class="topbar">
+        <div class="top-user">
+          <div class="points">نقاطك<strong>25</strong></div>
+          <div class="avatar" id="avatar-letter">س</div>
+        </div>
+
+        <div class="top-center-logo" onclick="adminAccess()">
+          <svg class="rajhi-logo" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-label="Rajhi Logo">
+            <g fill="none" stroke="#ffffff" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M32 8 L44 16 L44 28 L32 36 L20 28 L20 16 Z"/>
+              <path d="M20 28 L10 34 C7 36 6 40 6 43 C6 48 10 51 15 52 L24 54"/>
+              <path d="M44 28 L54 34 C57 36 58 40 58 43 C58 48 54 51 49 52 L40 54"/>
+              <path d="M24 54 L32 48 L40 54"/>
+              <path d="M24 32 C28 29 36 29 40 32"/>
+            </g>
+          </svg>
+        </div>
+
+        <div class="top-icons">
+          <div class="icon"><i class="fa-solid fa-magnifying-glass"></i></div>
+          <div class="icon"><i class="fa-solid fa-headphones"></i></div>
+          <div class="icon"><i class="fa-regular fa-bell"></i></div>
+        </div>
+      </div>
+
+      <div class="alert-box">
+        <div class="warn">!</div>
+        <div class="text">يرجى تحديث الهوية</div>
+        <div class="icon"><i class="fa-solid fa-chevron-left"></i></div>
+      </div>
+
+      <div class="stories">
+        <div class="story"><div class="circle"><i class="fa-solid fa-money-bill-wave"></i></div><div>عيدهم بالكاش</div></div>
+        <div class="story"><div class="circle"><i class="fa-brands fa-apple"></i></div><div>اطلب الآن</div></div>
+        <div class="story" onclick="navTo('transfer', document.querySelectorAll('.nav-item')[1])"><div class="circle"><i class="fa-solid fa-plane"></i></div><div>تحويل</div></div>
+        <div class="story" onclick="navTo('payments', document.querySelectorAll('.nav-item')[2])"><div class="circle"><i class="fa-solid fa-car"></i></div><div>مدفوعات</div></div>
+      </div>
+
+      <div class="balance">
+        <div class="balance-title">الرصيد الإجمالي</div>
+        <div class="balance-amount-wrap">
+          <div class="amount">﷼ <span id="main-bal">99,990,000.00</span></div>
+          <i id="toggleBalance" class="fa-solid fa-eye balance-toggle" onclick="toggleBalance()" title="إخفاء أو إظهار الرصيد"></i>
+        </div>
+        <div class="btn">
+          <i class="fa-solid fa-chart-column"></i>
+          <span>عرض الوضع المالي</span>
+        </div>
+      </div>
+
+      <div class="section-head">
+        <h2>الحسابات</h2>
+        <a href="#">عرض الكل</a>
+      </div>
+
+      <div class="home-card">
+        <div class="card-top">
+          <div class="amount-box">
+            <strong>﷼ <span id="home-account-balance">99,990,000.00</span></strong>
+            <div>جاري • 8058</div>
+          </div>
+
+          <div class="mada-wrap">
+            <div class="mada-bars"><span></span><span></span></div>
+            <div class="mada-text">mada</div>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="operations">
+          <i class="fa-solid fa-angle-down"></i>
+          <span id="main-user">سلطان القحطاني</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="transfer" class="page">
+      <div class="transfer-flow-shell">
+        <div id="transferApp"></div>
+      </div>
+    </section>
+
+    <section id="payments" class="page">
+      <div class="page-title">المدفوعات وسداد الفواتير</div>
+      <div id="pay-grid" class="pay-grid"></div>
+    </section>
+
+    <section id="receipt-page" class="page">
+      <div class="receipt-container" role="region" aria-label="Receipt">
+        <div class="top-line"></div>
+
+        <div class="header-image">
+          <img src="https://i.postimg.cc/vT6bc359/IMG_20260404_WA0005(1).jpg" alt="Al Rajhi Header">
+        </div>
+
+        <div class="sub-header">
+          <div class="beneficiary-text">مستفيد مصرف الراجحي alrajhi bank beneficiary</div>
+          <div class="date-block">
+            <div class="date-label">Date التاريخ</div>
+            <div class="date-value" id="receipt-date">2025/10/09 - 10:23 PM</div>
+          </div>
+        </div>
+
+        <div class="details-bar">
+          <span>Transfer Details</span>
+          <span>تفاصيل التحويل</span>
+        </div>
+
+        <div class="data-content">
+          <div class="data-row">
+            <div class="label-en">Amount</div>
+            <div class="center-data bold-text" id="receipt-amt">1000 SAR</div>
+            <div class="label-ar">المبلغ</div>
+          </div>
+
+          <div class="data-row">
+            <div class="label-en">From</div>
+            <div class="center-data">
+              <div style="font-weight:700;" id="receipt-from">HAMID RAZA MOHSIN SHAFI</div>
+              <div id="receipt-from-acc" class="muted" style="margin-top:6px;">SA** **** **** **** **** 7423</div>
+              <div style="margin-top:6px;font-size:14px;color:#263244;">Al Rajhi Bank</div>
+            </div>
+            <div class="label-ar">من</div>
+          </div>
+
+          <div class="data-row">
+            <div class="label-en">To</div>
+            <div class="center-data">
+              <div style="font-weight:700;" id="receipt-to">لؤي طاهر محمد جبران</div>
+              <div id="receipt-to-acc" class="muted" style="margin-top:6px;">077020110006084429497</div>
+            </div>
+            <div class="label-ar">إلى</div>
+          </div>
+
+          <div class="data-row" style="border-bottom:none;">
+            <div class="label-en">Purpose</div>
+            <div class="center-data" id="receipt-purpose">Personal Remittances</div>
+            <div class="label-ar">الغرض</div>
+          </div>
+        </div>
+
+        <div class="footer-image">
+          <img src="https://i.postimg.cc/7hTwfmSg/IMG_20260404_WA0005(2).jpg" alt="Al Rajhi Footer">
+        </div>
+      </div>
+
+      <div class="receipt-actions">
+        <button class="primary" onclick="window.print()">Save as PDF / Share</button>
+        <button class="secondary" onclick="closeReceipt()">Close</button>
+      </div>
+    </section>
+
+    <div class="bottom-nav" id="bottom-nav">
+      <div class="nav-item active" onclick="navTo('home', this)">
+        <i class="fa-solid fa-house"></i><div>الرئيسية</div>
+      </div>
+      <div class="nav-item" onclick="navTo('transfer', this)">
+        <i class="fa-solid fa-arrow-right-arrow-left"></i><div>التحويل</div>
+      </div>
+      <div class="nav-item" onclick="navTo('payments', this)">
+        <i class="fa-regular fa-comment-dots"></i><div>المدفوعات</div>
+      </div>
+      <div class="nav-item">
+        <i class="fa-regular fa-heart"></i><div>أسلوب حياة</div>
+      </div>
+      <div class="nav-item">
+        <i class="fa-solid fa-table-cells-large"></i><div>استكشف</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let balanceHidden = false;
+    let savedBalance = '';
+
+    function applyBalanceVisibility() {
+      const mainBal = document.getElementById('main-bal');
+      const homeBal = document.getElementById('home-account-balance');
+      const icon = document.getElementById('toggleBalance');
+      if (!mainBal || !homeBal || !icon) return;
+
+      if (!savedBalance) savedBalance = mainBal.innerText.trim();
+
+      if (balanceHidden) {
+        mainBal.innerText = '••••••';
+        homeBal.innerText = '••••••';
+        icon.classList.remove('fa-eye');
+        icon.classList.add('fa-eye-slash');
+      } else {
+        mainBal.innerText = savedBalance;
+        homeBal.innerText = savedBalance;
+        icon.classList.remove('fa-eye-slash');
+        icon.classList.add('fa-eye');
+      }
+    }
+
+    function toggleBalance() {
+      const mainBal = document.getElementById('main-bal');
+      if (!balanceHidden && mainBal) savedBalance = mainBal.innerText.trim();
+      balanceHidden = !balanceHidden;
+      applyBalanceVisibility();
+    }
+
+    function navTo(id, el) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      const target = document.getElementById(id);
+      if (target) target.classList.add('active');
+
+      if (el) {
+        document.querySelectorAll('.nav-item').forEach(l => l.classList.remove('active'));
+        el.classList.add('active');
+      }
+
+      if (id === 'transfer') {
+        renderTransferApp();
+      }
+
+      if (id !== 'receipt-page') {
+        document.getElementById('bottom-nav').style.display = '';
+      }
+
+      const activePage = document.getElementById(id);
+      if (activePage) activePage.scrollTop = 0;
+    }
+
+    function processTransferFromQuickForm() {
+      const amt = document.getElementById('transfer-amount')?.value || "0.00";
+      const beneficiaryName = document.getElementById('beneficiary-name')?.value || '-----';
+      const beneficiaryAccount = document.getElementById('dynamic-input')?.value || 'SA1234567890123';
+      const statusEl = document.getElementById('admin-status');
+      const status = statusEl ? statusEl.value : 'success';
+
+      document.getElementById('loading-screen').style.display = 'flex';
+
+      setTimeout(() => {
+        document.getElementById('loading-screen').style.display = 'none';
+
+        if (status === 'success') {
+          const audio = document.getElementById('notif-sound');
+          audio.play().catch(() => {});
+
+          const toast = document.getElementById('toast');
+          const dateStr = new Date().toLocaleDateString('en-GB').replace(/\//g, '-');
+          document.getElementById('toast-msg').innerHTML = `AlRajhiBank<br>خصم SAR ${amt} من حسابك ***8058 في ${dateStr} - تحويل`;
+          toast.style.top = "20px";
+          setTimeout(() => toast.style.top = "-150px", 5000);
+
+          document.getElementById('success-amt').innerText = "SAR " + amt;
+          document.getElementById('receipt-amt').innerText = amt + " SAR";
+          document.getElementById('receipt-from').innerText = document.getElementById('main-user').innerText || 'سلطان القحطاني';
+          document.getElementById('receipt-from-acc').innerText = 'SA80 **** **** **** 8058';
+          document.getElementById('receipt-to').innerText = beneficiaryName;
+          document.getElementById('receipt-to-acc').innerText = beneficiaryAccount;
+          document.getElementById('receipt-purpose').innerText = 'Personal Remittances';
+
+          const now = new Date();
+          const datePart = now.getFullYear() + "/" + (now.getMonth()+1).toString().padStart(2,'0') + "/" + now.getDate().toString().padStart(2,'0');
+          const timePart = now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
+          document.getElementById('receipt-date').innerText = datePart + " \u00A0-\u00A0 " + timePart;
+
+          document.getElementById('success-screen').style.display = 'flex';
+        } else {
+          const reason = document.getElementById('admin-reason').value || 'تم رفض العملية من النظام.';
+          document.getElementById('fail-reason').innerText = reason;
+          document.getElementById('fail-screen').style.display = 'flex';
+        }
+      }, 900);
+    }
+
+    function showReceipt() {
+      document.getElementById('success-screen').style.display = 'none';
+      navTo('receipt-page');
+      document.getElementById('bottom-nav').style.display = 'none';
+    }
+
+    function closeReceipt() {
+      navTo('home', document.querySelectorAll('.nav-item')[0]);
+      document.getElementById('bottom-nav').style.display = '';
+    }
+
+    function closeOverlays() {
+      document.getElementById('fail-screen').style.display = 'none';
+      document.getElementById('loading-screen').style.display = 'none';
+      document.getElementById('success-screen').style.display = 'none';
+    }
+
+    function openAdmin() {
+      const panel = document.getElementById('admin-panel');
+      panel.style.display = 'flex';
+      const nameEl = document.getElementById('admin-name');
+      const balEl = document.getElementById('admin-bal');
+      const userEl = document.getElementById('main-user');
+      const mainBalEl = document.getElementById('main-bal');
+      if (userEl) nameEl.value = userEl.innerText.trim();
+      if (mainBalEl) balEl.value = savedBalance || mainBalEl.innerText.trim();
+
+      const status = document.getElementById('admin-status');
+      const reasonRow = document.getElementById('admin-reason-row');
+      if (status) reasonRow.style.display = status.value === 'fail' ? 'block' : 'none';
+    }
+
+    function saveAdmin() {
+      const name = document.getElementById('admin-name').value || '';
+      const bal = document.getElementById('admin-bal').value || '';
+
+      document.getElementById('main-user').innerText = name;
+      savedBalance = bal;
+      document.getElementById('main-bal').innerText = bal;
+      document.getElementById('home-account-balance').innerText = bal;
+      applyBalanceVisibility();
+      document.getElementById('avatar-letter').innerText = (name.trim()[0] || 'س');
+
+      document.getElementById('admin-panel').style.display = 'none';
+    }
+
+    let taps = 0;
+    function adminAccess() {
+      taps++;
+      if (taps === 3) {
+        openAdmin();
+        taps = 0;
+      }
+      setTimeout(() => taps = 0, 1400);
+    }
+
+    /* ===== Transfer App ===== */
+    const transferState = {
+      screen: 'hub',
+      history: [],
+      company: false,
+      country: '',
+      currency: '',
+      method: '',
+      provider: '',
+      swift: 'BMISEGCXXXX',
+      branch: '101 - القاهرة',
+      amount: '1,000',
+      purpose: 'نفقات الأسرة',
+      quickType: 'acc'
+    };
+
+    const transferCountries = [
+      'أفغانستان','ألبانيا','الجزائر','أندورا','أنغولا','أنتيغوا وبربودا','الأرجنتين','أرمينيا','أستراليا','النمسا',
+      'أذربيجان','الباهاما','البحرين','بنغلاديش','بربادوس','بيلاروسيا','بلجيكا','بليز','بنين','بوتان',
+      'بوليفيا','البوسنة والهرسك','بوتسوانا','البرازيل','بروناي','بلغاريا','بوركينا فاسو','بوروندي','الرأس الأخضر','كمبوديا',
+      'الكاميرون','كندا','جمهورية أفريقيا الوسطى','تشاد','تشيلي','الصين','كولومبيا','جزر القمر','جمهورية الكونغو','جمهورية الكونغو الديمقراطية',
+      'كوستاريكا','كوت ديفوار','كرواتيا','كوبا','قبرص','التشيك','الدنمارك','جيبوتي','دومينيكا','جمهورية الدومينيكان',
+      'الإكوادور','مصر','السلفادور','غينيا الاستوائية','إريتريا','إستونيا','إسواتيني','إثيوبيا','فيجي','فنلندا',
+      'فرنسا','الغابون','غامبيا','جورجيا','ألمانيا','غانا','اليونان','غرينادا','غواتيمالا','غينيا',
+      'غينيا بيساو','غيانا','هايتي','هندوراس','المجر','آيسلندا','الهند','إندونيسيا','إيران','العراق',
+      'أيرلندا','إيطاليا','جامايكا','اليابان','الأردن','كازاخستان','كينيا','كيريباتي','الكويت','قيرغيزستان',
+      'لاوس','لاتفيا','لبنان','ليسوتو','ليبيريا','ليبيا','ليختنشتاين','ليتوانيا','لوكسمبورغ','مدغشقر',
+      'مالاوي','ماليزيا','المالديف','مالي','مالطا','جزر مارشال','موريتانيا','موريشيوس','المكسيك','ميكرونيزيا',
+      'مولدوفا','موناكو','منغوليا','الجبل الأسود','المغرب','موزمبيق','ميانمار','ناميبيا','ناورو','نيبال',
+      'هولندا','نيوزيلندا','نيكاراغوا','النيجر','نيجيريا','كوريا الشمالية','مقدونيا الشمالية','النرويج','عمان','باكستان',
+      'بالاو','فلسطين','بنما','بابوا غينيا الجديدة','باراغواي','بيرو','الفلبين','بولندا','البرتغال','قطر',
+      'رومانيا','روسيا','رواندا','سانت كيتس ونيفيس','سانت لوسيا','سانت فنسنت والغرينادين','ساموا','سان مارينو','ساو تومي وبرينسيب','السعودية',
+      'السنغال','صربيا','سيشل','سيراليون','سنغافورة','سلوفاكيا','سلوفينيا','جزر سليمان','الصومال','جنوب أفريقيا',
+      'كوريا الجنوبية','جنوب السودان','إسبانيا','سريلانكا','السودان','سورينام','السويد','سويسرا','سوريا','طاجيكستان',
+      'تنزانيا','تايلاند','تيمور الشرقية','توغو','تونغا','ترينيداد وتوباغو','تونس','تركيا','تركمانستان','توفالو',
+      'أوغندا','أوكرانيا','الإمارات العربية المتحدة','المملكة المتحدة','الولايات المتحدة الأمريكية','أوروغواي','أوزبكستان','فانواتو','الفاتيكان','فنزويلا',
+      'فيتنام','اليمن','زامبيا','زيمبابوي'
+    ];
+
+    const transferCurrencies = ['جنيه مصري - EGP','يورو - EUR','دولار أمريكي - USD'];
+    const transferProviders = ['بنك الاسكندرية','بنك مصر','Banque Du Caire','البنك الأهلي المصري'];
+
+    function transferFlagFor(country) {
+      const map = {
+        'مصر':'🇪🇬','الإمارات العربية المتحدة':'🇦🇪','الجبل الأسود':'🇲🇪','مونتسيرات':'🇲🇸','ناورو':'🇳🇷','كاليدونيا الجديدة':'🇳🇨','جزر مريانا الشمالية':'🇲🇵','بالاو':'🇵🇼','بابوا غينيا الجديدة':'🇵🇬','السعودية':'🇸🇦',
+        'الكويت':'🇰🇼','قطر':'🇶🇦','البحرين':'🇧🇭','عمان':'🇴🇲','الأردن':'🇯🇴','المغرب':'🇲🇦','تونس':'🇹🇳','الجزائر':'🇩🇿','تركيا':'🇹🇷','الولايات المتحدة الأمريكية':'🇺🇸',
+        'المملكة المتحدة':'🇬🇧','فرنسا':'🇫🇷','ألمانيا':'🇩🇪','إيطاليا':'🇮🇹','إسبانيا':'🇪🇸','الهند':'🇮🇳','باكستان':'🇵🇰','الصين':'🇨🇳','اليابان':'🇯🇵','كوريا الجنوبية':'🇰🇷'
+      };
+      return map[country] || '🌐';
+    }
+
+    function openTransferScreen(screen) {
+      transferState.history.push(transferState.screen);
+      transferState.screen = screen;
+      renderTransferApp();
+    }
+
+    function backTransferScreen() {
+      const prev = transferState.history.pop();
+      if (prev) transferState.screen = prev;
+      renderTransferApp();
+    }
+
+    function setQuickTransferType(type) {
+      transferState.quickType = type;
+      if (transferState.screen !== 'quickTransfer') {
+        transferState.screen = 'quickTransfer';
+      }
+      renderTransferApp();
+    }
+
+    function getQuickTransferLabel() {
+      if (transferState.quickType === 'acc') return 'رقم الحساب';
+      if (transferState.quickType === 'iban') return 'الآيبان';
+      return 'رقم الجوال';
+    }
+
+    function getQuickTransferPlaceholder() {
+      if (transferState.quickType === 'acc') return 'أدخل رقم الحساب';
+      if (transferState.quickType === 'iban') return 'SA00 0000 0000...';
+      return '05XXXXXXXX';
+    }
+
+    function transferStamps() {
+      return `
+        <div class="transfer-stamps">
+          <div class="transfer-stamp" style="left:-10px;bottom:96px;transform:rotate(-10deg);background:#d7e7ef"></div>
+          <div class="transfer-stamp" style="left:55px;bottom:82px;transform:rotate(10deg);background:#e7c9c0"></div>
+          <div class="transfer-stamp" style="left:130px;bottom:22px;transform:rotate(-4deg);background:#f1ccd3"></div>
+          <div class="transfer-stamp" style="left:190px;bottom:104px;transform:rotate(6deg);background:#c3d8e7"></div>
+          <div class="transfer-stamp" style="right:8px;bottom:46px;transform:rotate(-12deg);background:#e2d1b2"></div>
+          <div class="transfer-stamp" style="right:50px;bottom:120px;transform:rotate(8deg);background:#d1e1e5"></div>
+        </div>
+      `;
+    }
+
+    function renderTransferHub() {
+      const services = [
+        ['تحويل سريع','⚡','quickTransfer'],
+        ['إرسال هدية','🎁',''],
+        ['أوامر مستديمة','🔄',''],
+        ['جمعية خيرية','♡',''],
+        ['مستند','▣',''],
+        ['استثمار','⋯','']
+      ];
+
+      return `
+        <div class="transfer-phone dark">
+          <div class="transfer-notch-wrap"><div class="transfer-notch"></div></div>
+          <div class="transfer-screen" style="background:#071022;color:#fff">
+            <div class="transfer-dark-top">
+              <div class="transfer-row transfer-space-between">
+                <div style="text-align:right">
+                  <div style="color:#6a86ff;font-size:18px;font-weight:700">مستفيد جديد</div>
+                  <div style="font-size:22px;margin-top:4px">تحويل إلى</div>
+                </div>
+                <div class="transfer-profile">م</div>
+              </div>
+
+              <div class="transfer-dark-links">
+                <button>الراجحي</button>
+                <button>محلي</button>
+                <button onclick="openTransferScreen('beneficiaryType')">دولي</button>
+                <button>urpay</button>
+              </div>
+
+              <button class="transfer-dark-card" onclick="setQuickTransferType('acc')" style="margin-top:26px">
+                <div class="transfer-row transfer-space-between">
+                  <div style="text-align:right">
+                    <div style="font-size:20px;font-weight:700">تحويل لمرة واحدة</div>
+                    <div style="color:rgba(255,255,255,.6);margin-top:6px">بدون إضافة المستفيد</div>
+                  </div>
+                  <div class="transfer-mini-circle" style="width:56px;height:56px;background:rgba(255,255,255,.1)">👥</div>
+                </div>
+              </button>
+
+              <button class="transfer-dark-card" onclick="setQuickTransferType('acc')" style="margin-top:16px">
+                <div class="transfer-row transfer-space-between">
+                  <div style="text-align:right">
+                    <div style="font-size:18px">منصور محمد قائد الخياطي</div>
+                    <div style="color:rgba(255,255,255,.65);margin-top:6px">379000010006086697339</div>
+                  </div>
+                  <div class="transfer-mini-circle" style="background:#fff;color:#5338ff">◎</div>
+                </div>
+              </button>
+
+              <button class="transfer-dark-card" onclick="setQuickTransferType('acc')" style="margin-top:16px">
+                <div class="transfer-row transfer-space-between">
+                  <div style="text-align:right">
+                    <div style="font-size:18px">يحيى يحيى رزق شوتر</div>
+                    <div style="color:rgba(255,255,255,.65);margin-top:6px">103000010006086492825</div>
+                  </div>
+                  <div class="transfer-mini-circle" style="background:#fff;color:#5338ff">◎</div>
+                </div>
+              </button>
+
+              <div class="center" style="margin-top:14px;color:#4668ff;font-size:18px">عرض المزيد</div>
+
+              <div style="margin-top:28px;font-size:22px;font-weight:700;text-align:right">خدمات</div>
+              <div class="transfer-services-grid">
+                ${services.map(([label, ico, action]) => `
+                  <button class="transfer-service" ${action ? `onclick="openTransferScreen('${action}')"` : ''}>
+                    <div class="transfer-service-circle">${ico}</div>
+                    <div>${label}</div>
+                  </button>
+                `).join('')}
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderQuickTransferScreen() {
+      return `
+        <div class="transfer-phone">
+          <div class="transfer-notch-wrap"><div class="transfer-notch"></div></div>
+          <div class="transfer-screen">
+            <div class="transfer-header">
+              <button class="transfer-header-btn"></button>
+              <div class="transfer-title">التحويل السريع</div>
+              <button class="transfer-header-btn transfer-arrow" onclick="backTransferScreen()">←</button>
+            </div>
+
+            <div class="transfer-content">
+              <div class="transfer-quick-switches" style="margin-top:10px;">
+                <button class="transfer-quick-btn ${transferState.quickType === 'acc' ? 'active' : ''}" onclick="setQuickTransferType('acc')">رقم الحساب</button>
+                <button class="transfer-quick-btn ${transferState.quickType === 'iban' ? 'active' : ''}" onclick="setQuickTransferType('iban')">الآيبان</button>
+                <button class="transfer-quick-btn ${transferState.quickType === 'phone' ? 'active' : ''}" onclick="setQuickTransferType('phone')">رقم الجوال</button>
+              </div>
+
+              <div class="transfer-form-box" style="margin-top:16px;">
+                <label>الدولة المستلمة</label>
+                <select id="country-dropdown">
+                  ${transferCountries.map(country => `<option ${transferState.country === country ? 'selected' : ''}>${country}</option>`).join('')}
+                </select>
+              </div>
+
+              <div class="transfer-form-box">
+                <label id="input-label">${getQuickTransferLabel()}</label>
+                <input type="text" id="dynamic-input" placeholder="${getQuickTransferPlaceholder()}">
+              </div>
+
+              <div class="transfer-form-box">
+                <label>اسم المستفيد الكامل</label>
+                <input type="text" id="beneficiary-name" placeholder="الاسم الكامل">
+              </div>
+
+              <div class="transfer-form-box">
+                <label>المبلغ</label>
+                <input type="number" id="transfer-amount" placeholder="0.00">
+              </div>
+
+              <button class="transfer-primary" onclick="processTransferFromQuickForm()">تأكيد وإرسال التحويل</button>
+            </div>
+
+            ${transferStamps()}
+          </div>
+        </div>
+      `;
+    }
+
+    function renderBeneficiaryType() {
+      return `
+        <div class="transfer-phone">
+          <div class="transfer-notch-wrap"><div class="transfer-notch"></div></div>
+          <div class="transfer-screen">
+            <div class="transfer-header">
+              <button class="transfer-header-btn"></button>
+              <div class="transfer-title">اختر نوع المستفيد</div>
+              <button class="transfer-header-btn transfer-arrow" onclick="backTransferScreen()">←</button>
+            </div>
+            <div class="transfer-content">
+              <button class="transfer-option" onclick="openTransferScreen('hub')"><div class="transfer-row transfer-gap-12"><span>⚙</span><span>مستفيد في مصرف الراجحي</span></div><span>‹</span></button>
+              <button class="transfer-option" onclick="openTransferScreen('hub')"><div class="transfer-row transfer-gap-12"><span>🏷</span><span>مستفيد بنك محلي</span></div><span>‹</span></button>
+              <button class="transfer-option" onclick="openTransferScreen('intlNew')"><div class="transfer-row transfer-gap-12"><span>🌐</span><span>مستفيد بنك دولي</span></div><span>‹</span></button>
+              <button class="transfer-option" onclick="openTransferScreen('hub')"><div class="transfer-row transfer-gap-12"><span>∪</span><span>مستفيد urpay</span></div><span>‹</span></button>
+            </div>
+            ${transferStamps()}
+          </div>
+        </div>
+      `;
+    }
+
+    function renderIntlNew() {
+      return `
+        <div class="transfer-phone">
+          <div class="transfer-notch-wrap"><div class="transfer-notch"></div></div>
+          <div class="transfer-screen">
+            <div class="transfer-header">
+              <button class="transfer-header-btn"></button>
+              <div class="transfer-title">مستفيد دولي جديد</div>
+              <button class="transfer-header-btn transfer-arrow" onclick="backTransferScreen()">←</button>
+            </div>
+
+            <div class="transfer-segment-wrap">
+              <button class="transfer-segment ${transferState.company ? 'active' : ''}" onclick="transferState.company=true; renderTransferApp()">🏢 إلى شركة</button>
+              <button class="transfer-segment ${!transferState.company ? 'active' : ''}" onclick="transferState.company=false; renderTransferApp()">👤 إلى فرد</button>
+            </div>
+
+            <div class="transfer-content">
+              <button class="transfer-select-box transfer-soft-card" onclick="openTransferScreen('countryList')">
+                <span>˅</span>
+                <div class="transfer-row transfer-gap-12">
+                  <div>
+                    <div class="transfer-muted" style="font-size:15px">البلد</div>
+                    ${transferState.country ? `<div style="font-size:18px;margin-top:4px">${transferState.country}</div>` : ''}
+                  </div>
+                  <div>${transferFlagFor(transferState.country)}</div>
+                </div>
+              </button>
+
+              <button class="transfer-select-box transfer-soft-card" ${transferState.country ? `onclick="openTransferScreen('currencyList')"` : ''} style="${transferState.country ? '' : 'opacity:.65'}">
+                <span>˅</span>
+                <div>
+                  <div class="transfer-muted" style="font-size:15px">العملة</div>
+                  ${transferState.currency ? `<div style="font-size:18px;margin-top:4px">${transferState.currency}</div>` : ''}
+                </div>
+              </button>
+
+              ${transferState.country && transferState.currency ? `
+                <div style="margin-top:16px;font-size:18px">اختر طريقة التحويل</div>
+                <div class="transfer-methods">
+                  <button class="transfer-method ${transferState.method==='cash' ? 'active' : ''}" onclick="transferState.method='cash'; renderTransferApp()">
+                    <div style="font-size:30px">💵</div>
+                    <div>حوالة سريعة<br>يتم دفعها نقدا<br>للمستفيد</div>
+                  </button>
+                  <button class="transfer-method ${transferState.method==='account' ? 'active' : ''}" onclick="transferState.method='account'; renderTransferApp()">
+                    <div style="font-size:30px">🏦</div>
+                    <div>تحويل الى<br>حساب المستفيد</div>
+                  </button>
+                </div>
+              ` : ''}
+
+              ${transferState.method ? `
+                <button class="transfer-select-box transfer-soft-card" onclick="openTransferScreen('providerList')">
+                  <span>˅</span>
+                  <div>
+                    <div class="transfer-muted" style="font-size:15px">اختر البنك / مزود الخدمة</div>
+                    ${transferState.provider ? `<div style="font-size:18px;margin-top:4px">${transferState.provider}</div>` : ''}
+                  </div>
+                </button>
+              ` : ''}
+
+              ${transferState.provider ? `
+                <div class="transfer-input-box">
+                  <div class="transfer-muted" style="font-size:15px">ادخل كود سويفت</div>
+                  <input value="${transferState.swift}" oninput="transferState.swift=this.value.toUpperCase()">
+                </div>
+                <button class="transfer-select-box transfer-soft-card" onclick="transferState.branch='101 - القاهرة'; renderTransferApp()">
+                  <span>˅</span>
+                  <div>
+                    <div class="transfer-muted" style="font-size:15px">الفرع</div>
+                    <div style="font-size:18px;margin-top:4px">${transferState.branch}</div>
+                  </div>
+                </button>
+              ` : ''}
+            </div>
+
+            ${transferStamps()}
+
+            <div class="transfer-bottom-action">
+              <button class="transfer-primary ${transferState.provider ? '' : 'disabled'}" ${transferState.provider ? `onclick="openTransferScreen('beneficiaryDetails')"` : ''}>التالي</button>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderTransferPicker(title, items, type) {
+      return `
+        <div class="transfer-phone">
+          <div class="transfer-notch-wrap"><div class="transfer-notch"></div></div>
+          <div class="transfer-screen">
+            <div class="transfer-header">
+              <button class="transfer-header-btn"></button>
+              <div class="transfer-title">${title}</div>
+              <button class="transfer-header-btn transfer-arrow" onclick="backTransferScreen()">←</button>
+            </div>
+            <div class="transfer-content">
+              <div class="transfer-search-box"><span>⌕</span><span>بحث</span></div>
+              <div class="transfer-list-wrap">
+                ${items.map(item => `
+                  <button class="transfer-list-item" onclick="selectTransferItem('${type}', ${JSON.stringify(item).replace(/"/g,'&quot;')})">
+                    <span>${type==='country'?transferFlagFor(item):''}</span>
+                    <span>${item}</span>
+                  </button>
+                `).join('')}
+              </div>
+            </div>
+            ${transferStamps()}
+          </div>
+        </div>
+      `;
+    }
+
+    function renderBeneficiaryDetails() {
+      const fields = [
+        ['firstName','الاسم الاول للمستفيد'],
+        ['lastName','إسم العائلة للمستفيد'],
+        ['nationality','جنسية المستفيد'],
+        ['mobile','رقم الجوال للمستفيد'],
+        ['city','المدينة حيث يوجد الفرع'],
+        ['street','اسم الشارع'],
+        ['streetNo','رقم الشارع'],
+        ['poBox','صندوق البريد للمستفيد']
+      ];
+
+      return `
+        <div class="transfer-phone">
+          <div class="transfer-notch-wrap"><div class="transfer-notch"></div></div>
+          <div class="transfer-screen">
+            <div class="transfer-header">
+              <button class="transfer-header-btn">إلغاء</button>
+              <div class="transfer-title">تفاصيل المستفيد</div>
+              <button class="transfer-header-btn transfer-arrow" onclick="backTransferScreen()">←</button>
+            </div>
+            <div class="transfer-content">
+              ${fields.map(([key, label]) => `
+                <div class="transfer-field">
+                  ${key==='mobile' ? '<div style="position:absolute;left:16px;top:16px;font-size:20px">0020</div>' : ''}
+                  ${key==='nationality' ? '<div style="position:absolute;left:16px;top:16px">˅</div>' : ''}
+                  <input placeholder="${label}" oninput="transferState['${key}']=this.value">
+                </div>
+              `).join('')}
+            </div>
+            ${transferStamps()}
+            <div class="transfer-bottom-action"><button class="transfer-primary" onclick="openTransferScreen('activateNow')">التالي</button></div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderActivateNow() {
+      return `
+        <div class="transfer-phone">
+          <div class="transfer-notch-wrap"><div class="transfer-notch"></div></div>
+          <div class="transfer-screen">
+            <div class="transfer-header">
+              <button class="transfer-header-btn"></button>
+              <div class="transfer-title"></div>
+              <button class="transfer-header-btn transfer-arrow" onclick="backTransferScreen()">←</button>
+            </div>
+            <div class="transfer-notification">
+              <div style="color:#6c6c6c;font-size:13px">الرسائل · منذ لحظات</div>
+              <div style="font-size:18px;font-weight:700;margin-top:4px">AlRajhiBank</div>
+              <div style="font-size:16px;color:#666;margin-top:4px">تم إضافة مستفيد: AMIRA SAAD GOUDA...</div>
+              <div style="color:#2868d1;margin-top:8px">وضع علامة "مقروءة"</div>
+            </div>
+            <div class="transfer-content center" style="margin-top:86px">
+              <div style="width:80px;height:80px;border-radius:20px;border:2px solid #4a7dff;color:#4a7dff;display:flex;align-items:center;justify-content:center;font-size:34px;margin:0 auto">📱</div>
+              <div style="font-size:34px;margin-top:28px">تفعيل المستفيد الآن</div>
+              <div style="text-align:right;color:#6b6f75;font-size:20px;margin-top:24px">خيارات أخرى</div>
+              <button class="transfer-option" onclick="openTransferScreen('activatedSuccess')"><div class="transfer-row transfer-gap-12"><span>📱</span><span>تفعيل المستفيد عن طريق أمان الراجحي</span></div><span>‹</span></button>
+              <button class="transfer-option" onclick="openTransferScreen('activatedSuccess')"><div class="transfer-row transfer-gap-12"><span>💬</span><span>التفعيل من خلال الهاتف المصرفي</span></div><span>‹</span></button>
+              <button class="transfer-primary" style="margin-top:28px" onclick="openTransferScreen('activatedSuccess')">اتصل بي</button>
+              <button class="transfer-secondary" onclick="backTransferScreen()">إلغاء</button>
+            </div>
+            ${transferStamps()}
+          </div>
+        </div>
+      `;
+    }
+
+    function renderTransferSuccess() {
+      return `
+        <div class="transfer-phone">
+          <div class="transfer-notch-wrap"><div class="transfer-notch"></div></div>
+          <div class="transfer-screen">
+            <div class="transfer-success">
+              <div class="transfer-success-circle">✓</div>
+              <div style="font-size:34px;font-weight:700;margin-top:36px">تم تفعيل المستفيد بنجاح</div>
+              <div style="height:280px"></div>
+              <button class="transfer-primary" style="width:86%" onclick="openTransferScreen('amount')">إجراء تحويل</button>
+              <button class="transfer-secondary" style="width:86%" onclick="openTransferScreen('hub')">إذهب إلى التحويلات</button>
+            </div>
+            ${transferStamps()}
+          </div>
+        </div>
+      `;
+    }
+
+    function renderTransferAmount() {
+      return `
+        <div class="transfer-phone">
+          <div class="transfer-notch-wrap"><div class="transfer-notch"></div></div>
+          <div class="transfer-screen">
+            <div class="transfer-header">
+              <button class="transfer-header-btn">إلغاء</button>
+              <div class="transfer-title">المبلغ</div>
+              <button class="transfer-header-btn transfer-arrow" onclick="backTransferScreen()">←</button>
+            </div>
+            <div class="transfer-content">
+              <div class="transfer-amount-title">مبلغ التحويل</div>
+              <div class="transfer-amount-row">
+                <span style="font-size:28px">SAR</span>
+                <input value="${transferState.amount}" oninput="transferState.amount=this.value">
+              </div>
+              <div class="center">
+                <div class="transfer-center-soft">
+                  <span style="font-size:22px">SAR</span>
+                  <div><div class="transfer-muted" style="font-size:14px">العملة</div></div>
+                  <span>˅</span>
+                </div>
+              </div>
+
+              <div style="margin-top:28px;font-size:26px;text-align:right">من حساب</div>
+              <button class="transfer-select-box transfer-soft-card" style="margin-top:12px">
+                <div class="transfer-mini-circle" style="background:#fff">˅</div>
+                <div style="text-align:right">
+                  <div style="width:150px;height:24px;background:#8d8d8d;border-radius:4px;margin-bottom:10px;margin-right:auto"></div>
+                  <div class="transfer-muted" style="font-size:18px">جاري · 3217</div>
+                </div>
+              </button>
+
+              <div style="margin-top:24px;font-size:24px;text-align:right">حدد الغرض</div>
+              <div class="transfer-pills">
+                <button class="transfer-pill ${transferState.purpose==='نفقات الأسرة' ? 'active' : ''}" onclick="transferState.purpose='نفقات الأسرة'; renderTransferApp()">نفقات الأسرة</button>
+                <button class="transfer-pill ${transferState.purpose==='مصاريف بطاقة الائتمان' ? 'active' : ''}" onclick="transferState.purpose='مصاريف بطاقة الائتمان'; renderTransferApp()">مصاريف بطاقة الائتمان</button>
+              </div>
+
+              <div style="margin-top:24px;font-size:24px;text-align:right">حدد التحويل</div>
+              <div class="center" style="color:#0d857d;font-size:18px;margin-top:10px">المزيد ˅</div>
+            </div>
+            ${transferStamps()}
+            <div class="transfer-bottom-action"><button class="transfer-primary" onclick="openTransferScreen('transferDone')">التالي</button></div>
+          </div>
+        </div>
+      `;
+    }
+
+    function selectTransferItem(type, value) {
+      if (type === 'country') transferState.country = value;
+      if (type === 'currency') transferState.currency = value;
+      if (type === 'provider') transferState.provider = value;
+      backTransferScreen();
+    }
+
+    function renderTransferApp() {
+      const app = document.getElementById('transferApp');
+      if (!app) return;
+
+      let html = '';
+      if (transferState.screen === 'hub') html = renderTransferHub();
+      if (transferState.screen === 'quickTransfer') html = renderQuickTransferScreen();
+      if (transferState.screen === 'beneficiaryType') html = renderBeneficiaryType();
+      if (transferState.screen === 'intlNew') html = renderIntlNew();
+      if (transferState.screen === 'countryList') html = renderTransferPicker('اختر', transferCountries, 'country');
+      if (transferState.screen === 'currencyList') html = renderTransferPicker('اختر', transferCurrencies, 'currency');
+      if (transferState.screen === 'providerList') html = renderTransferPicker('اختر', transferProviders, 'provider');
+      if (transferState.screen === 'beneficiaryDetails') html = renderBeneficiaryDetails();
+      if (transferState.screen === 'activateNow') html = renderActivateNow();
+      if (transferState.screen === 'activatedSuccess') html = renderTransferSuccess();
+      if (transferState.screen === 'amount') html = renderTransferAmount();
+      if (transferState.screen === 'transferDone') html = renderTransferSuccess();
+
+      app.innerHTML = html;
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const pGrid = document.getElementById('pay-grid');
+      const icons = [
+        {n:"كهرباء", i:"bolt", c:"#F59E0B"},
+        {n:"مياه", i:"droplet", c:"#0EA5E9"},
+        {n:"اتصالات", i:"phone", c:"#8B5CF6"},
+        {n:"إنترنت", i:"wifi", c:"#10B981"},
+        {n:"مرور", i:"car", c:"#475569"},
+        {n:"تعليم", i:"graduation-cap", c:"#60A5FA"}
+      ];
+
+      if (pGrid) {
+        for(let i=1; i<=18; i++){
+          const cur = icons[i % icons.length];
+          const card = document.createElement('div');
+          card.className = 'pay-card';
+          card.innerHTML = `<i class="fa-solid fa-${cur.i}" style="color:${cur.c};font-size:26px;margin-bottom:10px;display:block;"></i><p style="font-size:12px;font-weight:900;color:#fff">${cur.n} ${i}</p>`;
+          pGrid.appendChild(card);
+        }
+      }
+
+      const now = new Date();
+      const datePartInit = now.getFullYear() + "/" + (now.getMonth()+1).toString().padStart(2,'0') + "/" + now.getDate().toString().padStart(2,'0');
+      const timePartInit = now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
+      document.getElementById('receipt-date').innerText = datePartInit + " \u00A0-\u00A0 " + timePartInit;
+      savedBalance = document.getElementById('main-bal').innerText.trim();
+      applyBalanceVisibility();
+
+      document.getElementById('admin-status').addEventListener('change', function () {
+        document.getElementById('admin-reason-row').style.display = this.value === 'fail' ? 'block' : 'none';
+      });
+
+      renderTransferApp();
+    });
+  </script>
+</body>
+</html>
